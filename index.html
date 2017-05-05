@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Psychic Game</title>
+  </head>
+  <body style="background:#777777;color:white;">
+
+    <div style ="margin-top:10%;" id="game">
+
+    <h1 style="text-align:center;">Psychic Game</h1>
+    <h2 style="text-align:center;"><span id ="computerTalk">Guess what letter I'm thinking of!</span></h2>
+    <h2 style="text-align:center;">Wins: <span id="winsDisplayed">0</span></h2>
+    <h2 style="text-align:center;">Losses: <span id="losses">0</span></h2>
+    <h2 style="text-align:center;">User Guesses: <span id="userGuessesDisplayed">None...</span></h2>
+    <h2 style="text-align:center;">Guesses Remaining: <span id="guessRemainingDisplayed">9</span></h2>
+      
+
+
+    </div>
+
+    <script type="text/javascript">
+
+      // Creates array of computer options
+        var options = ["a", "b", "c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"];
+      //create variables
+      
+        var winsDisplayed = document.getElementById("winsDisplayed")
+        var lossDisplayed = document.getElementById("losses")
+        var userGuessDisplayed = document.getElementById("userGuessesDisplayed")
+        var guessRemainingDisplayed = document.getElementById("guessRemainingDisplayed")
+        var computerTalkDisplayed = document.getElementById("computerTalk")
+        var userEntrys = []
+
+        var winCounter=1;
+        var lossCounter=1;
+        var guessCounter=8;
+
+        //computer chooses a random index in the array
+
+        var computerGuess = options[Math.floor(Math.random()* options.length)];
+        var indexOfComputer = options.indexOf(computerGuess);
+
+        console.log("The Index of the computers guess is: " + indexOfComputer);
+
+      
+      
+
+      document.onkeyup = function(event){
+        //each time key is clicked stores click 
+        var userGuess = event.key;
+        var indexOfUser = options.indexOf(userGuess);
+        console.log("The Index of the User's Guess is: " + indexOfUser);
+
+      
+        // if the userentry isn't in the alphabet don't count it!
+        if(indexOfUser == -1)
+        {
+          computerTalkDisplayed.textContent = "Uhm, thats not a letter!";
+          return;
+        }
+
+        //create a variable that sees if the userEntry was already in the array if it was don't count it!
+        var alreadyUsed = (userEntrys.indexOf(userGuess) > -1);
+        if(alreadyUsed==true)
+        {
+          computerTalkDisplayed.textContent = "You already gussed that!";
+          return;
+        }
+
+        //add users guess to array, display users array, taunt the user :D, display guess counter
+        userEntrys.push(userGuess);
+        userGuessDisplayed.textContent=userEntrys;
+        computerTalkDisplayed.textContent= "Try Again!";
+        guessRemainingDisplayed.textContent = guessCounter--;
+
+        //testing stuff
+        console.log("Guess Counters Remaining:" +guessCounter)
+        console.log("Computer:" + computerGuess);
+        console.log("User: "+ userGuess);
+      
+
+        if((indexOfComputer - indexOfUser)== 3 || (indexOfComputer - indexOfUser) ==-3)
+        {
+          computerTalkDisplayed.textContent = "Getting Close!";
+        }
+        if((indexOfComputer - indexOfUser)== 2 || (indexOfComputer - indexOfUser) ==-2)
+        {
+          computerTalkDisplayed.textContent = "Getting Closer!";
+        }
+        if((indexOfComputer - indexOfUser)== 1 || (indexOfComputer - indexOfUser) ==-1)
+        {
+          computerTalkDisplayed.textContent = "You're on Fire!!!";
+        }
+
+        if(userGuess == computerGuess)
+        {
+          //display a win if the user won
+          console.log("Wins Happaned");
+          winsDisplayed.textContent = winCounter++;
+
+          //reset game *  set user array to 0  *  Get a new computer guess   * set guess counter to 9 and minus 1 for some display error I cant fix
+          userEntrys.length = 0;
+          computerGuess = options[Math.floor(Math.random()* options.length)];
+          indexOfComputer = options.indexOf(computerGuess);
+          console.log("New Computer Guess! : " +computerGuess);
+          guessCounter=8;
+          computerTalkDisplayed.textContent="You Won!";
+          
+           
+        }
+        if(guessCounter==-1)
+        {
+          //display a loss if counter is 0
+          console.log("guess counter = 0");
+          lossDisplayed.textContent = lossCounter++;
+          console.log("lossCounter=:"+lossCounter);
+          computerTalkDisplayed.textContent="You Lose!";
+
+          //reset game *  set user array to 0  *  Get a new computer guess   * set guess counter to 9 and minus 1 for some display error I cant fix
+          userEntrys.length = 0;
+          computerGuess = options[Math.floor(Math.random()* options.length)];
+          indexOfComputer = options.indexOf(computerGuess);
+          console.log("New Computer Guess! : " +computerGuess);
+          guessCounter=8;
+        
+        }
+    
+      };
+
+
+
+      // going to add if the user is close (within one) of the computers guess 
+   </script>
+
+  </body>
+</html>
